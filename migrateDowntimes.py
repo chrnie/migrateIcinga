@@ -32,13 +32,13 @@ source_data = {
   #"attrs": [ "name", "state", "last_check_result" ],
   #"joins": [ "host.name", "host.state", "host.last_check_result" ],
   #"filter": "match(\"ping4\", service.name)",
-  "filter": "match(\"DT74*\", downtime.comment)"
+  #"filter": "match(\"DT74*\", downtime.comment)"
 }
 # The Script will check if the service already exist on target site
 target_data = {
   #"attrs": [ "name", "host_name", "author", "comment", "start_time", "end_time" ],
   #"filter": "match(\"ping4\", service.name)",
-  "filter": "match(\"DT74*\", downtime.comment)"
+  #"filter": "match(\"DT74*\", downtime.comment)"
 }
 
 # do the requests
@@ -48,7 +48,7 @@ source_data = requests.post(request_source_url,
   data=json.dumps(source_data),
   verify=source_ca
 )
-target_data = requests.post(request_source_url,
+target_data = requests.post(request_target_url,
   headers=source_headers,
   auth=(target_username, target_password),
   data=json.dumps(target_data),
@@ -101,7 +101,7 @@ for s_downtime in source_data.json()['results']:
       print "Creating " + s_downtime_id
     downtime_data = {
       "author": s_downtime['attrs']['author'],
-      "comment": s_downtime['attrs']['comment'] + "x",
+      "comment": s_downtime['attrs']['comment'],
       "start_time": s_downtime['attrs']['start_time'],
       "end_time": s_downtime['attrs']['end_time'],
       #"entry_time": s_downtime['attrs']['entry_time'],
